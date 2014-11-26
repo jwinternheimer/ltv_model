@@ -13,7 +13,7 @@ fitfunc <- function(retention,arpu,days_trailing) {
     coefs$a[i] <- exp(lm(retention ~ days, data=lndf,subset=1:(i+1))$coef[1])
     coefs$b[i] <- lm(retention ~ days, data=lndf,subset=1:(i+1))$coef[2]
   }
-  print(coefs)
+
   a <- coefs$a[match(days_trailing,coefs$day)]
   b <- coefs$b[match(days_trailing,coefs$day)]
   
