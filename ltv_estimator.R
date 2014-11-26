@@ -2,6 +2,10 @@
 ## ARPU (average revenue per user), and days_trailing (the number of days of retention
 ## data that the estimates are to be derived with).
 
+## The length of the retention vector must be the same as the vector of days that
+## corresponds to the days_trailing. For example, if you use 30 as days_trailing, 
+## the length of retention must be 10 (1,2,3,4,5,6,7,14,28,30).
+
 fitfunc <- function(retention,arpu,days_trailing) {
   # Benchmarks for retention data
   benchmarks <- c(1,2,3,4,5,6,7,14,28,30)
