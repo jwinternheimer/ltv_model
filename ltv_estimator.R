@@ -1,3 +1,7 @@
+## fitfunc Function takes parameters retention (vector of actual retention metrics), 
+## ARPU (average revenue per user), and days_trailing (the number of days of retention
+## data that the estimates are to be derived with).
+
 fitfunc <- function(retention,arpu,days_trailing) {
   # Benchmarks for retention data
   benchmarks <- c(1,2,3,4,5,6,7,14,28,30)
@@ -24,18 +28,21 @@ fitfunc <- function(retention,arpu,days_trailing) {
     predictedRet$day[i] = i 
     predictedRet$retention[i] = a * (i^b)
   }
+  
   cat("Generalized Model: y = ",a,"* x ^",b,"\n")
   
   #Plot predicted retention
   plot(predictedRet$day,predictedRet$retention,type="l",main="Predicted Retention",
        xlim = c(0,30),ylab="Retention", xlab = "Day")
 
-  # Sums the predicted retention 
+  # Sums the predicted retention to estimate duration
   ltv <- data.frame(day=c(30,90,180,360), duration = numeric(4), LTV = numeric(4))
   ltv$duration[1] <- sum(predictedRet$retention[1:30])
   ltv$duration[2] <- sum(predictedRet$retention[1:90])
   ltv$duration[3] <- sum(predictedRet$retention[1:180]) 
   ltv$duration[4] <- sum(predictedRet$retention[1:360]) 
+  
+  # Multiply duration by ARPU to estimate LTV
   ltv$LTV[1] <- ltv$duration[1] * arpu
   ltv$LTV[2] <- ltv$duration[2] * arpu
   ltv$LTV[3] <- ltv$duration[3] * arpu
